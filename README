@@ -1,0 +1,25 @@
+LANGUAGE EXPLORE PROJECT
+========================
+Names: Sumner & Sam
+
+Idris is a purely functional programming language with dependent types.
+Dependent types are powerful enough to encode mathematical proofs in the type
+system, thus if the code compiles, the proof is correct.
+
+Installation Instructions
+-------------------------
+
+On Arch Linux, install the "idris" package.
+
+Compilation Instructions
+------------------------
+
+Run "idris <filename> --check" to ensure that the program compiles. If it does,
+then the proof contained in <filename> is correct.
+
+What We Proved
+--------------
+
+- even.idr
+    - defines a function which tels whether or not a number is even
+    - proves that for all natural numbers k, 2 * k is even
