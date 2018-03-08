@@ -73,8 +73,8 @@ The following function looks up an element in an ``n`` sized vector::
     index FZ     (x :: xs) = x
     index (FS k) (x :: xs) = index k xs
 
-Functions in Haskell
-====================
+Functions in Idris
+==================
 
 - Idris requires type declarations for all functions (this is unlike Haskell
   where this is optional)
