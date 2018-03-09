@@ -18,3 +18,19 @@ evenIsDoubleAdd {n=S Z} pk = ?impos
 evenIsDoubleAdd {n=S $ S n} {k=S k} pk = 
   rewrite sym $ plusSuccRightSucc k k in 
     plusConstantLeft n (plus k k) 2 (evenIsDoubleAdd {n=n} {k=k} (evenDownTwo pk))
+
+evenPlusSelf : (n:Nat) -> (even (n + n) = Just n)
+evenPlusSelf Z = Refl
+evenPlusSelf (S n) = 
+  rewrite plusCommutative n (1 + n) in
+  rewrite evenPlusSelf n in Refl
+
+evenPlusEven : (even n = Just k) -> (even m = Just j) -> (even (m + n) = Just (j + k))
+evenPlusEven {n=n} {k=k} {m=m} {j=j} pk pj =
+  rewrite evenIsDoubleAdd {n=n} {k=k} pk in
+  rewrite evenIsDoubleAdd {n=m} {k=j} pj in
+  rewrite sym $ plusAssociative j j (k+k) in
+  rewrite plusAssociative j k k in
+  rewrite plusCommutative (plus j k) k in
+  rewrite plusAssociative j k (j+k) in
+    evenPlusSelf (plus j k)
