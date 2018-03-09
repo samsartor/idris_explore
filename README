@@ -23,3 +23,6 @@ What We Proved
 - even.idr
     - defines a function which tels whether or not a number is even
     - proves that for all natural numbers k, 2 * k is even
+- seq_increasing.idr
+    - defines a sequence
+    - proves that the sequence is increasing
