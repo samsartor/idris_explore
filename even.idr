@@ -1,40 +1,20 @@
--- Returns whether or not the number is even.
---    Note that natural numbers are defined recursively, much like in Lambda
---      Calculus.
---      (See http://docs.idris-lang.org/en/latest/tutorial/typesfuns.html#data-types)
---    Z is the zero type for natural numbers
---    S is a function which returns the successor to a natural number
-even : Nat -> Bool
-even Z = True
-even (S k) = odd k where
-  odd Z = False
-  odd (S k) = even k
+odd : Nat -> Maybe Nat
+even : Nat -> Maybe Nat
+even Z = Just 0
+even (S n) = map S (odd n)
 
--- Proves that k + k is even where k is a natural number.
---    Refl is the reflexive identity: x = x
---    "rewrite" takes a proof that x = y and substitutes that into the
---      expression on the other side of the "in".
-evenAddSelf : (k:Nat) -> even (k + k) = True
-evenAddSelf Z = Refl
-evenAddSelf (S Z) = Refl
-evenAddSelf (S (S k)) = rewrite (plusCommutative k (2 + k)) in evenAddSelf k
+odd Z = Nothing
+odd (S n) = even n
 
--- Proves that 2 * k is even where k is a natural number.
-evenMulTwo : (k:Nat) -> even (2 * k) = True
-evenMulTwo k = rewrite (plusCommutative k 0) in evenAddSelf k
+unjust : (Just a = Just b) -> a = b
+evenDownOne : (even (S n) = Just (S k)) -> odd n = Just k
 
--- Proves that k + 1 is odd where k is an even number.
-evenPlusOne : {k:Nat} -> (even k = True) -> even (S k) = False
-evenPlusOne {k=Z} e = Refl
+evenDownTwo : (even (S $ S n) = Just (S k)) -> even n = Just k
+evenDownTwo eut = evenDownOne eut
 
--- Proves that k - 1 is odd where k is an even number.
-evenMinusOne : {k:Nat} -> (even (S k) = True) -> even k = False
-evenMinusOne {k=S Z} e = Refl
-
--- Proves that k + 1 is even where k is an odd number.
-oddPlusOne : {k:Nat} -> (even k = False) -> even (S k) = True
-oddPlusOne {k=S Z} e = Refl
-
--- Proves that k - 1 is even where k is an odd number.
-oddMinusOne : {k:Nat} -> (even (S k) = False) -> even k = True
-oddMinusOne {k=Z} e = Refl
+evenIsDoubleAdd : (even n = Just k) -> (n = k + k)
+evenIsDoubleAdd {n=Z} pk = rewrite sym $ unjust pk in Refl
+evenIsDoubleAdd {n=S Z} pk = ?impos
+evenIsDoubleAdd {n=S $ S n} {k=S k} pk = 
+  rewrite sym $ plusSuccRightSucc k k in 
+    plusConstantLeft n (plus k k) 2 (evenIsDoubleAdd {n=n} {k=k} (evenDownTwo pk))
