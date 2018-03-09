@@ -22,3 +22,19 @@ evenAddSelf (S (S k)) = rewrite (plusCommutative k (2 + k)) in evenAddSelf k
 -- Proves that 2 * k is even where k is a natural number.
 evenMulTwo : (k:Nat) -> even (2 * k) = True
 evenMulTwo k = rewrite (plusCommutative k 0) in evenAddSelf k
+
+-- Proves that k + 1 is odd where k is an even number.
+evenPlusOne : {k:Nat} -> (even k = True) -> even (S k) = False
+evenPlusOne {k=Z} e = Refl
+
+-- Proves that k - 1 is odd where k is an even number.
+evenMinusOne : {k:Nat} -> (even (S k) = True) -> even k = False
+evenMinusOne {k=S Z} e = Refl
+
+-- Proves that k + 1 is even where k is an odd number.
+oddPlusOne : {k:Nat} -> (even k = False) -> even (S k) = True
+oddPlusOne {k=S Z} e = Refl
+
+-- Proves that k - 1 is even where k is an odd number.
+oddMinusOne : {k:Nat} -> (even (S k) = False) -> even k = True
+oddMinusOne {k=Z} e = Refl
